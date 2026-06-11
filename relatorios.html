@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relatórios do gestor | Trilha de Líderes</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/lideres.css">
+<link rel="icon" href="logo_EM.png">
+</head>
+<body>
+<div class="ec-wrap">
+
+  <header class="ec-header no-print">
+    <div class="ec-brand">
+      <img src="logo_EM.png" alt="Estante Mágica" class="ec-logo"
+           onerror="this.outerHTML='<div class=&quot;ec-logo-fallback&quot;>📚</div>'">
+      <div class="ec-brand-text">
+        <h1>Relatórios do gestor</h1>
+        <p>Consolidação dos diagnósticos do time</p>
+      </div>
+    </div>
+    <a class="ec-back" href="index.html">← Início</a>
+  </header>
+
+  <div class="report-section no-print">
+    <h3>📥 Carregar diagnósticos</h3>
+    <p style="color:var(--cinza-700)">Selecione um ou mais arquivos <strong>.csv</strong> que os líderes exportaram em “Meus resultados”. Tudo é processado <strong>no seu navegador</strong> — nada é enviado para a internet.</p>
+    <input type="file" id="rel-files" accept=".csv,text/csv" multiple class="ec-file">
+    <p id="rel-status" class="ec-file-status"></p>
+  </div>
+
+  <div id="rel-saida"></div>
+
+</div>
+<script src="js/tracking.js"></script>
+<script src="js/diagnostico-data.js"></script>
+<script src="js/relatorios.js"></script>
+</body>
+</html>

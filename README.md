@@ -12,6 +12,8 @@ build e sem servidor). As respostas do diagnóstico ficam apenas no navegador do
 | `pipeline.html` | **Etapa 1 · Pipeline da Liderança** — as 6 passagens de liderança (Charan, Drotter & Noel) e as 3 dimensões que mudam em cada uma: habilidades, gestão do tempo e valores profissionais. Acordeões com transição, competências e armadilhas. |
 | `principios.html` | **Etapa 2 · Princípios de Ram Charan** — a disciplina da Execução (Pessoas, Estratégia, Operações) e os 8 Know-How do líder. |
 | `diagnostico.html` | **Etapa 3 · Diagnóstico de Liderança** — autoavaliação (Likert 1–5) em 6 competências. Gera o **nível atual por dimensão** (Inicial → Em desenvolvimento → Consolidado → Referência), pontos fortes e plano de foco, exportável em PDF (botão Imprimir). |
+| `resultados.html` | **Meus resultados** — histórico e evolução dos diagnósticos da pessoa (com setas de variação vs. o anterior). Exporta CSV para enviar ao gestor. |
+| `relatorios.html` | **Painel do gestor** — carrega os CSVs do time e consolida: média por competência, lacunas coletivas, distribuição por momento e quadro por líder (usando o diagnóstico mais recente de cada pessoa). 100% no navegador. |
 
 ## Estrutura
 
@@ -24,8 +26,17 @@ lideres/
 │   └─ lideres.css    (estilos da plataforma + pipeline/diagnóstico)
 └─ js/
     ├─ diagnostico-data.js  (passagens, 6 dimensões, itens Likert e faixas de nível)
-    └─ diagnostico.js       (fluxo, cálculo e relatório)
+    ├─ diagnostico.js       (fluxo, cálculo e relatório)
+    ├─ tracking.js          (identificação leve + registro de diagnósticos + CSV)
+    ├─ resultados.js        (tela "Meus resultados" — evolução do participante)
+    └─ relatorios.js        (painel do gestor — consolidação dos CSVs do time)
 ```
+
+## Fluxo de acompanhamento (gestor)
+
+1. Cada líder se identifica (nome + e-mail, só no navegador) e faz o diagnóstico — o resultado é salvo no histórico local.
+2. Em **Meus resultados**, exporta o **CSV** e envia ao gestor.
+3. O gestor abre **Painel do gestor**, carrega os CSVs e vê a consolidação do time — sem nada subir para a internet.
 
 ## O diagnóstico
 

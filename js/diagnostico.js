@@ -18,9 +18,13 @@ let nome = "", passagemId = "";
 
 const $ = id => document.getElementById(id);
 
+const Track = window.LideresTrack || null;
+
 /* ---------- Entrada ---------- */
 const inNome = $("in-nome");
-try{ const s = localStorage.getItem("lid_nome"); if(s) inNome.value = s; }catch(e){}
+const perfilSalvo = Track ? Track.getPerfil() : null;
+if(perfilSalvo && perfilSalvo.nome){ inNome.value = perfilSalvo.nome; }
+else { try{ const s = localStorage.getItem("lid_nome"); if(s) inNome.value = s; }catch(e){} }
 inNome.focus();
 
 $("nivel-grid").innerHTML = PASSAGENS_DIAG.map(p => `
@@ -156,6 +160,26 @@ function gerarRelatorio(){
     }));
   }catch(e){}
 
+  // Registra no histórico só se a pessoa estiver identificada (evita ruído anônimo).
+  // Fica disponível para o relatório do gestor via exportação de CSV.
+  const dimsMap = {};
+  r.dims.forEach(d => { dimsMap[d.dim.id] = +d.media.toFixed(2); });
+  const eventoDiag = {
+    passagem: passagem.nome,
+    media: +r.mediaGeral.toFixed(2),
+    nivel: `${r.nivelGeral.n} · ${r.nivelGeral.nome}`,
+    dims: dimsMap
+  };
+  let registrado = false;
+  if(Track){
+    const perfil = Track.getPerfil();
+    if(perfil){
+      Track.setPerfil(nome || perfil.nome, perfil.email);   // mantém nome em sincronia
+      Track.log(eventoDiag);
+      registrado = true;
+    }
+  }
+
   const barrasHTML = r.dims.map(d => `
     <div class="diag-dim">
       <div class="dd-top">
@@ -230,8 +254,12 @@ function gerarRelatorio(){
     <div class="report-section no-print">
       <h3>🔁 E agora?</h3>
       <p style="color:var(--cinza-700)">Este é seu retrato de <strong>hoje</strong>. Refaça o diagnóstico em ~90 dias para acompanhar a evolução. Leve seu foco de desenvolvimento para a conversa com seu gestor ou mentor.</p>
+      ${registrado
+        ? `<div class="foco-card"><h5>✅ Diagnóstico salvo no seu histórico</h5><p>Veja sua evolução em <a href="resultados.html">Meus resultados</a> e baixe o CSV para compartilhar com seu gestor.</p></div>`
+        : `<div class="foco-card"><h5>💾 Quer acompanhar sua evolução?</h5><p>Você não está identificado, então este diagnóstico ficou só nesta tela. <a href="#" id="lid-identificar">Identifique-se</a> para salvar no histórico e habilitar o relatório do gestor.</p></div>`}
       <div class="report-actions">
         <button class="btn btn-primary btn-lg" onclick="window.print()">🖨️ Salvar em PDF / Imprimir</button>
+        ${registrado ? `<a class="btn btn-ghost btn-lg" href="resultados.html">📊 Meus resultados</a>` : ""}
         <a class="btn btn-ghost btn-lg" href="pipeline.html">Rever o pipeline</a>
         <a class="btn btn-ghost btn-lg" href="index.html">Voltar ao início</a>
       </div>
@@ -240,5 +268,19 @@ function gerarRelatorio(){
 
   $("tela-quiz").style.display = "none";
   $("tela-relatorio").style.display = "block";
+
+  const lnk = $("lid-identificar");
+  if(lnk && Track){
+    lnk.addEventListener("click", e => {
+      e.preventDefault();
+      Track.promptLogin(() => {
+        // grava o diagnóstico agora que há perfil e leva aos resultados
+        Track.log(eventoDiag);
+        Track.renderBarra("#ec-identity");
+        location.href = "resultados.html";
+      });
+    });
+  }
+
   window.scrollTo({top:0, behavior:"smooth"});
 }
