@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diagnóstico de Liderança | Trilha de Líderes</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/lideres.css">
+<link rel="icon" href="logo_EM.png">
+</head>
+<body>
+<div class="ec-wrap">
+
+  <header class="ec-header no-print">
+    <div class="ec-brand">
+      <img src="logo_EM.png" alt="Estante Mágica" class="ec-logo"
+           onerror="this.outerHTML='<div class=&quot;ec-logo-fallback&quot;>📚</div>'">
+      <div class="ec-brand-text">
+        <h1>Etapa 3 · Diagnóstico de Liderança</h1>
+        <p>Autoavaliação · nível atual por competência</p>
+      </div>
+    </div>
+    <a class="ec-back" href="index.html">← Voltar</a>
+  </header>
+
+  <!-- TELA DE ENTRADA -->
+  <section id="tela-entrada">
+    <div class="ec-hero">
+      <span class="tag">~8 minutos · suas respostas ficam só no seu navegador</span>
+      <h2>Onde está a sua liderança hoje? 📊</h2>
+      <p>Você vai avaliar 6 competências de liderança ligadas ao pipeline e aos princípios de Ram Charan. Não existe resposta certa — responda com honestidade sobre como você age <strong>hoje</strong>, não sobre como gostaria de agir. No fim, você recebe seu nível em cada dimensão e um plano de foco, exportável em PDF.</p>
+    </div>
+    <div class="entrada-card">
+      <h2>👋 Vamos começar</h2>
+      <p>Seu nome aparece no relatório. Nada é enviado para servidores — fica só neste dispositivo.</p>
+      <input type="text" id="in-nome" class="campo" placeholder="Seu nome" maxlength="40" autocomplete="name">
+
+      <p style="text-align:left;font-weight:700;margin:6px 0 8px">Em que momento da sua liderança você está hoje?</p>
+      <div class="nivel-grid" id="nivel-grid"></div>
+
+      <button id="btn-iniciar" class="btn btn-primary btn-lg btn-block" style="margin-top:16px" disabled>Iniciar diagnóstico →</button>
+    </div>
+  </section>
+
+  <!-- QUESTIONÁRIO -->
+  <section id="tela-quiz" style="display:none">
+    <div class="stepper no-print" id="stepper"></div>
+    <div class="prog-wrap no-print"><div class="fill" id="prog"></div></div>
+    <h2 id="sec-titulo" style="font-size:22px;margin-bottom:6px"></h2>
+    <p id="sec-sub" style="color:var(--cinza-400);margin-bottom:20px"></p>
+    <div id="perguntas"></div>
+    <div class="sec-nav no-print" style="display:flex;justify-content:space-between;gap:12px;margin-top:8px">
+      <button id="btn-voltar" class="btn btn-ghost btn-lg">← Voltar</button>
+      <button id="btn-avancar" class="btn btn-primary btn-lg" disabled>Avançar →</button>
+    </div>
+  </section>
+
+  <!-- RELATÓRIO -->
+  <section id="tela-relatorio" style="display:none"></section>
+
+</div>
+
+<script src="js/diagnostico-data.js"></script>
+<script src="js/diagnostico.js"></script>
+</body>
+</html>
