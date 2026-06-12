@@ -487,3 +487,16 @@ ul.lista-watch li::before{content:"⚠";color:var(--laranja)}
 
 @media(max-width:720px){ .lentes{grid-template-columns:1fr} }
 @media print{ .tpl{box-shadow:none} }
+
+/* ---------- Cenários de decisão ---------- */
+.cen-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:6px;flex-wrap:wrap}
+.cen-tema{display:inline-flex;align-items:center;gap:6px;background:var(--roxo-claro);color:var(--roxo-escuro);font-weight:700;font-size:13px;padding:5px 12px;border-radius:99px}
+.cen-prog{font-size:13px;color:var(--cinza-400);font-weight:600}
+.cen-sit{font-size:18px;font-weight:700;line-height:1.45;margin:10px 0 16px}
+.pg-qbox .popt.bom{border-color:var(--laranja);background:#FFFBEB}
+.popt .popt-tag{display:block;font-size:12px;font-weight:700;margin-top:6px}
+.cen-fb{border-radius:12px;padding:14px 16px;margin-top:6px;font-size:14px;line-height:1.5;animation:fadeIn .25s}
+.cen-fb.correct{background:#F0FDF4;border:1px solid #BBF7D0;color:#166534}
+.cen-fb.bom{background:#FFFBEB;border:1px solid #FDE68A;color:#92400E}
+.cen-fb.wrong{background:#FEF2F2;border:1px solid #FECACA;color:#991B1B}
+.cen-score{display:flex;gap:8px;align-items:center;font-weight:800;color:var(--roxo-escuro)}

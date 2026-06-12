@@ -17,13 +17,17 @@ Duas frentes complementares, a partir de um hub único:
 | `gestao.html` | **Virei gestor, e agora?** — 10 módulos calibrados em 3 altitudes: autogestão, cadência & rituais, 1:1 (com GROW), liderança situacional & delegação, feedback (DESC/SBI/Radical Candor), metas (SMART/RACI), performance, segurança psicológica, upward management e IA como copiloto. |
 | `templates.html` | **Kit de Templates** imprimível: roteiro de 1:1, plano 30-60-90, agenda de ritual, matriz RACI e canvas SMART. |
 | `biblioteca.html` | **Biblioteca de Fontes** — sínteses de Maxwell, Bernardinho, Clóvis de Barros, Vânia Ferrari, Sinek, Wiseman, Edmondson, Kim Scott, Blanchard, Pink e Charan, ligadas aos módulos. |
+| `diagnostico-gestao.html` | **Diagnóstico de Gestão** — autoavaliação (Likert 1–5) em 6 capacidades, calibrada por altitude (operacional → tático → estratégico). Registra com tipo `gestao` e alimenta o Painel do Gestor. |
+| `cenarios.html` | **Cenários de Decisão** — 8 mini-casos de gestão/liderança com escolhas e feedback na hora (melhor escolha / aceitável / evite) e pontuação. |
 | **Trilha de Liderança** | |
 | `pipeline.html` | **Pipeline da Liderança** — as 6 passagens de liderança (Charan, Drotter & Noel) e as 3 dimensões que mudam em cada uma. |
 | `principios.html` | **Princípios de Ram Charan** — a disciplina da Execução (Pessoas, Estratégia, Operações) e os 8 Know-How do líder. |
 | `empreendedorismo.html` | **Líder que multiplica** — mentalidade intra/empreendedora, autonomia, cultura no-compete e como formar outros líderes. |
 | `diagnostico.html` | **Etapa 3 · Diagnóstico de Liderança** — autoavaliação (Likert 1–5) em 6 competências. Gera o **nível atual por dimensão** (Inicial → Em desenvolvimento → Consolidado → Referência), pontos fortes e plano de foco, exportável em PDF (botão Imprimir). |
 | `resultados.html` | **Meus resultados** — histórico e evolução dos diagnósticos da pessoa (com setas de variação vs. o anterior). Exporta CSV para enviar ao gestor. |
-| `relatorios.html` | **Painel do gestor** — carrega os CSVs do time e consolida: média por competência, lacunas coletivas, distribuição por momento e quadro por líder (usando o diagnóstico mais recente de cada pessoa). 100% no navegador. |
+| `relatorios.html` | **Painel do gestor** — carrega os CSVs do time e consolida **Gestão e Liderança separadamente**: média por dimensão, lacunas coletivas, distribuição por momento e quadro por pessoa (diagnóstico mais recente). 100% no navegador. |
+
+O `tracking.js` é **type-aware**: um único histórico/CSV guarda diagnósticos de Gestão (`tipo=gestao`) e Liderança (`tipo=lideranca`); as telas de Meus Resultados e Painel do Gestor separam as duas frentes automaticamente.
 
 ## Estrutura
 
