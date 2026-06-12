@@ -1,20 +1,50 @@
 /* ============================================================
    tracking.js — identificação leve + registro de diagnósticos
-   Trilha de Líderes · 100% no navegador (localStorage). Sem servidor.
+   Trilha de Gestão & Liderança · 100% no navegador (localStorage).
+   Type-aware: suporta diagnósticos de "lideranca" e "gestao".
    API global: window.LideresTrack
    ============================================================ */
 (function(){
   const KP = "LID_PERFIL", KE = "LID_EVENTOS";
 
-  /* colunas do CSV: [chave, rótulo] — ordem fixa.
-     As 6 últimas são as dimensões do diagnóstico (médias 1-5). */
+  /* Metadados das dimensões (fonte única de verdade p/ rótulos e tipo) */
+  const DIM_META = {
+    // Liderança
+    delegacao:{label:"🤲 Delegação & Multiplicação", tipo:"lideranca"},
+    tempo:    {label:"⏱️ Tempo & Prioridades",        tipo:"lideranca"},
+    valores:  {label:"💎 Valores de Liderança",       tipo:"lideranca"},
+    execucao: {label:"🏁 Execução",                   tipo:"lideranca"},
+    pessoas:  {label:"🌱 Desenvolvimento de Pessoas", tipo:"lideranca"},
+    negocio:  {label:"🧭 Visão de Negócio",           tipo:"lideranca"},
+    // Gestão
+    g_autogestao:{label:"🧭 Autogestão & Prioridades", tipo:"gestao"},
+    g_ritmo:     {label:"🔁 Cadência & Rituais",       tipo:"gestao"},
+    g_coaching:  {label:"🗣️ 1:1 & Coaching",           tipo:"gestao"},
+    g_delegacao: {label:"🤲 Delegação & Autonomia",    tipo:"gestao"},
+    g_feedback:  {label:"💬 Feedback & Conversas",     tipo:"gestao"},
+    g_performance:{label:"📈 Metas & Performance",     tipo:"gestao"}
+  };
+  const ALL_DIM_KEYS = Object.keys(DIM_META);
+  const DIM_KEYS_BY_TIPO = {
+    lideranca: ALL_DIM_KEYS.filter(k => DIM_META[k].tipo==="lideranca"),
+    gestao:    ALL_DIM_KEYS.filter(k => DIM_META[k].tipo==="gestao")
+  };
+  const TIPO_LABEL = { lideranca:"Liderança", gestao:"Gestão" };
+
+  /* colunas do CSV: [chave, rótulo] — ordem fixa (base + dimensões) */
   const COLS = [
-    ["data","Data/Hora"],["nome","Nome"],["email","E-mail"],
-    ["passagem","Momento"],["media","Media geral"],["nivel","Nivel geral"],
-    ["delegacao","Delegacao"],["tempo","Tempo"],["valores","Valores"],
-    ["execucao","Execucao"],["pessoas","Pessoas"],["negocio","Negocio"]
+    ["data","Data/Hora"],["nome","Nome"],["email","E-mail"],["tipo","Tipo"],
+    ["passagem","Momento"],["media","Media geral"],["nivel","Nivel geral"]
+  ].concat(ALL_DIM_KEYS.map(k => [k, k]));
+
+  /* Faixas de nível (compartilhadas entre gestão e liderança) */
+  const NIVEIS = [
+    { n:1, max:2.49, nome:"Inicial",            classe:1, cor:"#EF4444" },
+    { n:2, max:3.39, nome:"Em desenvolvimento", classe:2, cor:"#F59E0B" },
+    { n:3, max:4.19, nome:"Consolidado",        classe:3, cor:"#0EA5E9" },
+    { n:4, max:5.01, nome:"Referência",         classe:4, cor:"#22C55E" }
   ];
-  const DIM_KEYS = ["delegacao","tempo","valores","execucao","pessoas","negocio"];
+  function nivel(media){ const m=parseFloat(media); if(isNaN(m)) return null; return NIVEIS.find(f=>m<=f.max)||NIVEIS[NIVEIS.length-1]; }
 
   /* ---------- storage ---------- */
   function read(k,def){ try{ const v=JSON.parse(localStorage.getItem(k)); return v==null?def:v; }catch(e){ return def; } }
@@ -24,21 +54,28 @@
   function setPerfil(nome,email){ const p={nome:String(nome||"").trim(),email:String(email||"").trim(),desde:new Date().toISOString()}; write(KP,p); return p; }
   function limparPerfil(){ localStorage.removeItem(KP); }
 
-  function getEventos(){ return read(KE,[]); }
-  function limparEventos(){ localStorage.removeItem(KE); }
+  function getEventos(tipo){
+    const evs = read(KE,[]).map(e => ({ tipo:"lideranca", ...e }));   // default p/ eventos antigos
+    return tipo ? evs.filter(e => e.tipo===tipo) : evs;
+  }
+  function limparEventos(tipo){
+    if(!tipo){ localStorage.removeItem(KE); return; }
+    write(KE, getEventos().filter(e => e.tipo!==tipo));
+  }
 
-  /* registra um diagnóstico. ev = {passagem, media, nivel, dims:{id:media}} */
+  /* registra um diagnóstico. ev = {tipo, passagem, media, nivel, dims:{key:media}} */
   function log(ev){
     const p = getPerfil() || {nome:"(anônimo)",email:""};
-    const evs = getEventos();
+    const evs = read(KE,[]);
     const agora = new Date();
     const row = {
       ts: agora.getTime(), data: agora.toISOString(),
-      nome: p.nome, email: p.email,
+      nome: p.nome, email: p.email, tipo: ev.tipo || "lideranca",
       passagem: ev.passagem||"", media: (ev.media==null?"":ev.media), nivel: ev.nivel||""
     };
+    ALL_DIM_KEYS.forEach(k => { row[k] = ""; });
     const dims = ev.dims || {};
-    DIM_KEYS.forEach(k => { row[k] = (dims[k]==null?"":dims[k]); });
+    Object.keys(dims).forEach(k => { if(k in row) row[k] = dims[k]; });
     evs.push(row);
     write(KE,evs);
     return evs.length;
@@ -54,17 +91,16 @@
   }
   function baixarCSV(nomeArq, evs){
     evs = evs || getEventos();
-    const csv = "﻿" + toCSV(evs);             // BOM p/ Excel abrir acentos certo
+    const csv = "﻿" + toCSV(evs);
     const blob = new Blob([csv], {type:"text/csv;charset=utf-8;"});
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = nomeArq || ("diagnostico_lideres_" + new Date().toISOString().slice(0,10) + ".csv");
+    a.download = nomeArq || ("diagnosticos_" + new Date().toISOString().slice(0,10) + ".csv");
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(()=>URL.revokeObjectURL(url), 1000);
   }
 
-  /* parser de CSV (lida com aspas, vírgulas e quebras dentro de campos) */
   function parseCSV(text){
     text = String(text||"").replace(/^﻿/,"");
     const rows=[]; let row=[], field="", inq=false, i=0;
@@ -83,7 +119,6 @@
     if(field!=="" || row.length){ row.push(field); rows.push(row); }
     return rows;
   }
-  /* converte CSV (no nosso formato) em objetos {chave:valor} */
   function objetosDoCSV(text){
     const rows = parseCSV(text).filter(r => r.length && r.some(c => c!==""));
     if(!rows.length) return [];
@@ -93,35 +128,29 @@
       return found ? found[0] : (COLS[i] ? COLS[i][0] : ("col"+i));
     });
     return rows.slice(1).map(r => {
-      const o={}; idxToKey.forEach((k,i)=> o[k]=r[i]!=null?r[i]:""); return o;
+      const o={}; idxToKey.forEach((k,i)=> o[k]=r[i]!=null?r[i]:""); if(!o.tipo) o.tipo="lideranca"; return o;
     });
   }
 
   /* ---------- e-mail (enviar pra si) ---------- */
   function resumoTexto(evs){
+    evs = evs || getEventos();
     if(!evs.length) return "Você ainda não tem diagnósticos registrados.";
-    const ult = evs.slice().sort((a,b)=>(b.ts||0)-(a.ts||0))[0];
-    const linhas = [
-      "Resumo — Diagnóstico de Liderança",
-      "Diagnósticos registrados: " + evs.length,
-      "",
-      "Último diagnóstico (" + dataLocal(ult) + "):",
-      "Momento: " + (ult.passagem||"—"),
-      "Nível geral: " + (ult.nivel||"—") + " · média " + (ult.media||"—") + "/5",
-      "Por competência:",
-      "  Delegação: " + (ult.delegacao||"—") + " · Tempo: " + (ult.tempo||"—") + " · Valores: " + (ult.valores||"—"),
-      "  Execução: " + (ult.execucao||"—") + " · Pessoas: " + (ult.pessoas||"—") + " · Negócio: " + (ult.negocio||"—")
-    ];
+    const linhas = ["Resumo — Diagnósticos (Gestão & Liderança)", "Total: " + evs.length, ""];
+    ["gestao","lideranca"].forEach(tp => {
+      const list = evs.filter(e=>e.tipo===tp).sort((a,b)=>(b.ts||0)-(a.ts||0));
+      if(!list.length) return;
+      const u = list[0];
+      linhas.push(`• ${TIPO_LABEL[tp]} — último (${dataLocal(u)}): ${u.nivel||"—"} · média ${u.media||"—"}/5 · ${u.passagem||""}`);
+    });
     return linhas.join("\n");
   }
   function enviarEmail(){
     const p = getPerfil();
-    const evs = getEventos();
     const dest = (p && p.email) ? p.email : "";
-    const corpo = resumoTexto(evs) +
-      "\n\n— Para o histórico completo, use \"Baixar meu CSV\" e anexe o arquivo a este e-mail.";
+    const corpo = resumoTexto() + "\n\n— Para o histórico completo, use \"Baixar meu CSV\" e anexe a este e-mail.";
     location.href = "mailto:" + encodeURIComponent(dest) +
-      "?subject=" + encodeURIComponent("Meu diagnóstico — Trilha de Líderes") +
+      "?subject=" + encodeURIComponent("Meus diagnósticos — Gestão & Liderança") +
       "&body=" + encodeURIComponent(corpo);
   }
 
@@ -192,6 +221,7 @@
   window.LideresTrack = {
     getPerfil, setPerfil, limparPerfil, getEventos, limparEventos, log,
     toCSV, baixarCSV, parseCSV, objetosDoCSV, enviarEmail, resumoTexto,
-    renderBarra, promptLogin, COLS, DIM_KEYS
+    renderBarra, promptLogin, nivel,
+    COLS, DIM_META, DIM_KEYS_BY_TIPO, TIPO_LABEL
   };
 })();
