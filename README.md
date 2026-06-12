@@ -1,16 +1,26 @@
-# Trilha de Líderes · Estante Mágica
+# Gestão & Liderança · Estante Mágica
 
-Plataforma interativa de **treinamento contínuo para líderes**. Mesma identidade visual
-dos demais treinamentos da Estante Mágica, **100% client-side** (HTML/CSS/JS puro, sem
+Plataforma interativa de **desenvolvimento contínuo de gestores e líderes**. Mesma identidade
+visual dos demais treinamentos da Estante Mágica, **100% client-side** (HTML/CSS/JS puro, sem
 build e sem servidor). As respostas do diagnóstico ficam apenas no navegador do participante.
 
-## Etapas
+Duas frentes complementares, a partir de um hub único:
+- **Jornada da Gestão** — repertório prático de quem assume a gestão, calibrado em 3 altitudes (operacional → tático → estratégico).
+- **Trilha de Liderança** — pipeline, princípios de Ram Charan, mentalidade empreendedora e formação de novos líderes.
+
+## Páginas
 
 | Arquivo | O que é |
 |---|---|
-| `index.html` | Hub — navegação pelas 3 etapas da trilha. |
-| `pipeline.html` | **Etapa 1 · Pipeline da Liderança** — as 6 passagens de liderança (Charan, Drotter & Noel) e as 3 dimensões que mudam em cada uma: habilidades, gestão do tempo e valores profissionais. Acordeões com transição, competências e armadilhas. |
-| `principios.html` | **Etapa 2 · Princípios de Ram Charan** — a disciplina da Execução (Pessoas, Estratégia, Operações) e os 8 Know-How do líder. |
+| `index.html` | Hub — ramifica nas duas frentes (Gestão e Liderança) e nas ferramentas. |
+| **Jornada da Gestão** | |
+| `gestao.html` | **Virei gestor, e agora?** — 10 módulos calibrados em 3 altitudes: autogestão, cadência & rituais, 1:1 (com GROW), liderança situacional & delegação, feedback (DESC/SBI/Radical Candor), metas (SMART/RACI), performance, segurança psicológica, upward management e IA como copiloto. |
+| `templates.html` | **Kit de Templates** imprimível: roteiro de 1:1, plano 30-60-90, agenda de ritual, matriz RACI e canvas SMART. |
+| `biblioteca.html` | **Biblioteca de Fontes** — sínteses de Maxwell, Bernardinho, Clóvis de Barros, Vânia Ferrari, Sinek, Wiseman, Edmondson, Kim Scott, Blanchard, Pink e Charan, ligadas aos módulos. |
+| **Trilha de Liderança** | |
+| `pipeline.html` | **Pipeline da Liderança** — as 6 passagens de liderança (Charan, Drotter & Noel) e as 3 dimensões que mudam em cada uma. |
+| `principios.html` | **Princípios de Ram Charan** — a disciplina da Execução (Pessoas, Estratégia, Operações) e os 8 Know-How do líder. |
+| `empreendedorismo.html` | **Líder que multiplica** — mentalidade intra/empreendedora, autonomia, cultura no-compete e como formar outros líderes. |
 | `diagnostico.html` | **Etapa 3 · Diagnóstico de Liderança** — autoavaliação (Likert 1–5) em 6 competências. Gera o **nível atual por dimensão** (Inicial → Em desenvolvimento → Consolidado → Referência), pontos fortes e plano de foco, exportável em PDF (botão Imprimir). |
 | `resultados.html` | **Meus resultados** — histórico e evolução dos diagnósticos da pessoa (com setas de variação vs. o anterior). Exporta CSV para enviar ao gestor. |
 | `relatorios.html` | **Painel do gestor** — carrega os CSVs do time e consolida: média por competência, lacunas coletivas, distribuição por momento e quadro por líder (usando o diagnóstico mais recente de cada pessoa). 100% no navegador. |
@@ -19,11 +29,14 @@ build e sem servidor). As respostas do diagnóstico ficam apenas no navegador do
 
 ```
 lideres/
-├─ index.html · pipeline.html · principios.html · diagnostico.html
+├─ index.html  (hub)
+├─ gestao.html · templates.html · biblioteca.html      (Jornada da Gestão)
+├─ pipeline.html · principios.html · empreendedorismo.html · diagnostico.html   (Liderança)
+├─ resultados.html · relatorios.html                    (acompanhamento)
 ├─ logo_EM.png
 ├─ css/
 │   ├─ base.css       (identidade visual base)
-│   └─ lideres.css    (estilos da plataforma + pipeline/diagnóstico)
+│   └─ lideres.css    (estilos da plataforma + gestão/liderança/diagnóstico)
 └─ js/
     ├─ diagnostico-data.js  (passagens, 6 dimensões, itens Likert e faixas de nível)
     ├─ diagnostico.js       (fluxo, cálculo e relatório)

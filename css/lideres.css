@@ -423,3 +423,67 @@ ul.lista-watch li::before{content:"⚠";color:var(--laranja)}
 @media(max-width:720px){
   .passos-intro,.tre-grid,.proc-row{grid-template-columns:1fr}
 }
+
+/* ============================================================
+   GESTÃO — Jornada da Gestão, altitudes, templates e biblioteca
+   ============================================================ */
+
+/* ---------- Selos de altitude (operacional / tático / estratégico) ---------- */
+.alt-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.alt-op{background:#E0F2FE;color:#0369A1}
+.alt-tat{background:var(--roxo-claro);color:var(--roxo-escuro)}
+.alt-est{background:#FFE4EE;color:#C2255C}
+.alt-legend{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 4px}
+.alt-legend .alt-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--cinza-700)}
+
+.mod-badges{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+
+/* ---------- Lentes (mesma estrutura do tre-grid, headers coloridos) ---------- */
+.lentes{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:12px}
+.lente{border-radius:12px;padding:14px 16px;border-top:4px solid}
+.lente.op{background:#F0F9FF;border-color:#0EA5E9}
+.lente.tat{background:#F6F3FF;border-color:var(--roxo)}
+.lente.est{background:#FFF1F6;border-color:var(--rosa)}
+.lente h5{font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;font-weight:800}
+.lente.op h5{color:#0369A1}.lente.tat h5{color:var(--roxo-escuro)}.lente.est h5{color:#C2255C}
+.lente p{font-size:13px;color:var(--cinza-700);margin:0}
+
+/* ---------- Caixa de ferramenta / metodologia ---------- */
+.tool{margin-top:14px;background:var(--cinza-100);border:1px solid var(--cinza-200);border-radius:12px;padding:14px 16px}
+.tool h5{font-size:14px;margin-bottom:6px;color:var(--cinza-900);display:flex;align-items:center;gap:8px}
+.tool .toolname{background:var(--roxo);color:white;font-size:11px;font-weight:800;letter-spacing:.5px;padding:2px 8px;border-radius:6px}
+.tool ul{margin:6px 0 0;padding-left:20px}
+.tool li{font-size:13px;color:var(--cinza-700);margin-bottom:5px}
+.tool .dica{font-size:13px;color:var(--roxo-escuro);background:var(--roxo-claro);border-radius:8px;padding:8px 12px;margin-top:8px}
+
+/* ---------- Templates imprimíveis ---------- */
+.tpl{background:var(--branco);border:1px solid var(--cinza-200);border-radius:14px;padding:22px 24px;box-shadow:var(--sombra);margin-bottom:18px;break-inside:avoid}
+.tpl h3{font-size:18px;margin-bottom:4px;display:flex;align-items:center;gap:10px}
+.tpl .tpl-sub{font-size:13px;color:var(--cinza-400);margin-bottom:14px}
+.tpl .tpl-block{border:1px dashed var(--cinza-200);border-radius:10px;padding:14px 16px;margin-bottom:10px;background:var(--cinza-100)}
+.tpl .tpl-block strong{display:block;font-size:13px;color:var(--roxo-escuro);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
+.tpl .tpl-block ul{margin:0;padding-left:18px}
+.tpl .tpl-block li{font-size:14px;color:var(--cinza-700);margin-bottom:5px}
+.tpl .tpl-fill{min-height:42px;border-bottom:1px solid var(--cinza-200);margin:8px 0}
+.tpl-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+.tpl-table th,.tpl-table td{border:1px solid var(--cinza-200);padding:8px 10px;text-align:left}
+.tpl-table th{background:var(--cinza-100);font-weight:700}
+
+/* ---------- Biblioteca de fontes ---------- */
+.fonte{background:var(--branco);border-radius:14px;padding:20px 22px;box-shadow:var(--sombra);border:1px solid var(--cinza-200);margin-bottom:16px}
+.fonte .fonte-top{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.fonte .fonte-ava{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,var(--roxo),var(--rosa));color:white;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.fonte h4{font-size:17px;margin:0}
+.fonte .fonte-meta{font-size:12px;color:var(--cinza-400);text-transform:uppercase;letter-spacing:.4px}
+.fonte p{font-size:14px;color:var(--cinza-700);margin:6px 0}
+.fonte .fonte-frase{border-left:3px solid var(--roxo);padding:8px 14px;background:var(--roxo-claro);border-radius:0 10px 10px 0;color:var(--roxo-escuro);font-style:italic;font-size:14px;margin:10px 0}
+.fonte .fonte-liga{font-size:12px;color:var(--cinza-400)}
+
+/* ---------- Faixa de seções no hub ---------- */
+.hub-sec{display:flex;align-items:center;gap:10px;margin:32px 0 4px}
+.hub-sec .hub-ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.hub-sec h2{font-size:20px;font-weight:800}
+.hub-sec p{font-size:13px;color:var(--cinza-400);margin:0}
+
+@media(max-width:720px){ .lentes{grid-template-columns:1fr} }
+@media print{ .tpl{box-shadow:none} }
